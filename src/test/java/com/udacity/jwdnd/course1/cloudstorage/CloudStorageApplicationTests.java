@@ -7,6 +7,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class CloudStorageApplicationTests {
 
@@ -14,6 +16,7 @@ class CloudStorageApplicationTests {
     private int port;
 
     private WebDriver driver;
+    private String baseURL;
 
     @BeforeAll
     static void beforeAll() {
@@ -23,6 +26,7 @@ class CloudStorageApplicationTests {
     @BeforeEach
     public void beforeEach() {
         this.driver = new ChromeDriver();
+        baseURL = "http://localhost:" + port;
     }
 
     @AfterEach
@@ -38,4 +42,23 @@ class CloudStorageApplicationTests {
         Assertions.assertEquals("Login", driver.getTitle());
     }
 
+    @Test
+    public void testUserSignupLoginAndSubmitMessage() {
+        String username = "pzastoup";
+        String password = "whatabadpassword";
+        String messageText = "Hello!";
+
+
+        driver.get(baseURL + "/signup");
+
+        SignupPage signupPage = new SignupPage(driver);
+        signupPage.signup("Peter", "Zastoupil", username, password);
+
+        driver.get(baseURL + "/login");
+
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.login(username, password);
+
+        assertEquals("Home", driver.getTitle());
+    }
 }
