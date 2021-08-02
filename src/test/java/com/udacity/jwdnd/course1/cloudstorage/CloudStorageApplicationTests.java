@@ -60,5 +60,8 @@ class CloudStorageApplicationTests {
         loginPage.login(username, password);
 
         assertEquals("Home", driver.getTitle());
+
+        HomePage homePage = new HomePage(driver);
+        assertEquals(0, homePage.getNoteCount());
     }
 }
