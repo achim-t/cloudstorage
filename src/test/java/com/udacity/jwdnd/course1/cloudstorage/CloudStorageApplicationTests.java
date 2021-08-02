@@ -1,9 +1,14 @@
 package com.udacity.jwdnd.course1.cloudstorage;
 
+import com.udacity.jwdnd.course1.cloudstorage.model.Note;
+import com.udacity.jwdnd.course1.cloudstorage.model.User;
+import com.udacity.jwdnd.course1.cloudstorage.services.NoteService;
+import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 
@@ -17,6 +22,10 @@ class CloudStorageApplicationTests {
 
     private WebDriver driver;
     private String baseURL;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private NoteService noteService;
 
     @BeforeAll
     static void beforeAll() {
@@ -44,6 +53,11 @@ class CloudStorageApplicationTests {
 
     @Test
     public void testUserSignupLoginAndSubmitMessage() {
+        User user = new User(1, "achim", "salty", "pass", "achim", "t");
+        userService.createUser(user);
+        Note note = new Note(user.getUserId(), "title", "text");
+        noteService.createNote(note);
+
         String username = "pzastoup";
         String password = "whatabadpassword";
         String messageText = "Hello!";
