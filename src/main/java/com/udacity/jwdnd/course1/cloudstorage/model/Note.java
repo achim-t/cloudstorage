@@ -6,12 +6,6 @@ public class Note {
     private String noteTitle;
     private String noteText;
 
-    public Note(Integer userId, String noteTitle, String noteText) {
-        this.userId = userId;
-        this.noteTitle = noteTitle;
-        this.noteText = noteText;
-    }
-
     public Integer getNoteId() {
         return noteId;
     }
@@ -43,4 +37,5 @@ public class Note {
     public void setNoteText(String noteText) {
         this.noteText = noteText;
     }
+
 }

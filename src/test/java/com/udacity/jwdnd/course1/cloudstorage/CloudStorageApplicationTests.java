@@ -55,7 +55,7 @@ class CloudStorageApplicationTests {
     public void testUserSignupLoginAndSubmitMessage() {
         User user = new User(1, "achim", "salty", "pass", "achim", "t");
         userService.createUser(user);
-        Note note = new Note(user.getUserId(), "title", "text");
+        Note note = new Note();
         noteService.createNote(note);
 
         String username = "pzastoup";
@@ -77,5 +77,7 @@ class CloudStorageApplicationTests {
 
         HomePage homePage = new HomePage(driver);
         assertEquals(0, homePage.getNoteCount());
+        homePage.createNote("title", "message");
+        assertEquals(1, homePage.getNoteCount());
     }
 }
