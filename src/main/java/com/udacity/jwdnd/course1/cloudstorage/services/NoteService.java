@@ -30,4 +30,12 @@ public class NoteService {
     public void deleteAllNotes(Integer userId) {
         noteMapper.delete(userId);
     }
+
+    public void updateNote(Note note) {
+        noteMapper.update(note);
+    }
+
+    public void delete(Integer noteid) {
+        noteMapper.delete(noteid);
+    }
 }

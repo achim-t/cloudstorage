@@ -85,7 +85,7 @@
                                         th:onclick="showNoteModal([[${note.noteid}]], [[${note.notetitle}]], [[${note.notedescription}]])"
                                         type="button">Edit
                                 </button>
-                                <a class="btn btn-danger">Delete</a>
+                                <a class="btn btn-danger" th:href="@{/notes/delete(id=${note.noteid})}">Delete</a>
                             </td>
                             <th class="note-title" scope="row" th:text="${note.notetitle}">Example Note Title</th>
                             <td class="note-text" th:text="${note.notedescription}">Example Note Description</td>
@@ -105,7 +105,7 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <form action="#" method="POST" th:action="@{/home}">
+                                <form action="#" method="POST" th:action="@{/notes}">
                                     <input id="note-id" name="noteid" type="hidden">
                                     <div class="form-group">
                                         <label class="col-form-label" for="note-title">Title</label>
@@ -214,7 +214,7 @@
 <script type="text/javascript">
             // For opening the note modal
             function showNoteModal(noteId, noteTitle, noteDescription) {
-                $('#note-id').val(noteId ? noteId : '');
+                $('#note-id').val(noteId ? noteId : 0);
                 $('#note-title').val(noteTitle ? noteTitle : '');
                 $('#note-description').val(noteDescription ? noteDescription : '');
                 $('#noteModal').modal('show');
