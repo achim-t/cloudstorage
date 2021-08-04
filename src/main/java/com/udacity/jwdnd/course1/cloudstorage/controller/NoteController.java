@@ -26,7 +26,7 @@ public class NoteController {
     public String postNote(Authentication authentication, Note note) {
         User user = userService.getUser(authentication.getName());
         if (note.getNoteid() > 0) {
-            noteService.updateNote(note);
+            noteService.updateNote(note, user.getUserId());
         } else {
             noteService.addNote(note, user.getUserId());
         }
@@ -34,8 +34,8 @@ public class NoteController {
     }
 
     @GetMapping("/delete")
-    public String deleteNote(@RequestParam("id") Integer noteid) {
-        noteService.delete(noteid);
+    public String deleteNote(@RequestParam("id") Integer noteid, Authentication authentication) throws Exception {
+        noteService.delete(noteid, userService.getUser(authentication.getName()).getUserId());
         return "redirect:/home#nav-notes";
     }
 }

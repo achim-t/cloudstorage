@@ -19,23 +19,25 @@ public class NoteService {
 
     public List<Note> getNotes(User user) {
         return noteMapper.getNotesByUser(user.getUserId());
-//        return noteMapper.getAllNotes();
     }
-
 
     public int addNote(Note note, Integer userid) {
         return noteMapper.insert(note, userid);
     }
 
     public void deleteAllNotes(Integer userId) {
-        noteMapper.delete(userId);
+        for (Note note : noteMapper.getNotesByUser(userId)) {
+            noteMapper.delete(note.getNoteid());
+        }
     }
 
-    public void updateNote(Note note) {
-        noteMapper.update(note);
+    public void updateNote(Note note, Integer userId) {
+        if (noteMapper.findOne(note.getNoteid()).getUserid() == userId)
+            noteMapper.update(note);
     }
 
-    public void delete(Integer noteid) {
-        noteMapper.delete(noteid);
+    public void delete(Integer noteid, Integer userId) {
+        if (noteMapper.findOne(noteid).getUserid() == userId)
+            noteMapper.delete(noteid);
     }
 }
