@@ -30,12 +30,12 @@ public class NoteController {
         } else {
             noteService.addNote(note, user.getUserId());
         }
-        return "redirect:/home";
+        return "redirect:/home#nav-notes";
     }
 
     @GetMapping("/delete")
     public String deleteNote(@RequestParam("id") Integer noteid) {
         noteService.delete(noteid);
-        return "redirect:/home";
+        return "redirect:/home#nav-notes";
     }
 }
