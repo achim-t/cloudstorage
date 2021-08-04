@@ -1,6 +1,7 @@
 package com.udacity.jwdnd.course1.cloudstorage.controller;
 
 import com.udacity.jwdnd.course1.cloudstorage.model.User;
+import com.udacity.jwdnd.course1.cloudstorage.services.CredentialService;
 import com.udacity.jwdnd.course1.cloudstorage.services.NoteService;
 import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
 import org.springframework.stereotype.Controller;
@@ -19,10 +20,12 @@ public class HomeController {
 
     private final NoteService noteService;
     private final UserService userService;
+    private final CredentialService credentialService;
 
-    public HomeController(NoteService noteService, UserService userService) {
+    public HomeController(NoteService noteService, UserService userService, CredentialService credentialService) {
         this.noteService = noteService;
         this.userService = userService;
+        this.credentialService = credentialService;
     }
 
     @GetMapping
@@ -34,6 +37,7 @@ public class HomeController {
         User user = userService.getUser(principal.getName());
 
         model.addAttribute("notes", this.noteService.getNotes(user));
+        model.addAttribute("credentials", credentialService.getCredentials(user));
         return "home";
     }
 }

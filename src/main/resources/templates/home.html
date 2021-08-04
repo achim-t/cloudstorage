@@ -96,7 +96,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="note : ${notes}" th:id="'note-'+${note.noteid}">
+                        <tr th:each="note : ${notes}">
                             <td>
                                 <button class="btn btn-success"
                                         th:onclick="showNoteModal([[${note.noteid}]], [[${note.notetitle}]], [[${note.notedescription}]])"
@@ -149,7 +149,7 @@
                 </div>
             </div>
             <div aria-labelledby="nav-credentials-tab" class="tab-pane fade" id="nav-credentials" role="tabpanel"
-                 th:classappend="${tab}=='credentials' ? ' show active' : ''">
+                 th:classappend="${tab}=='credentials' ? 'show active' : ''">
                 <button class="btn btn-info float-right" onclick="showCredentialModal()" style="margin: 0.25em;"
                         type="button">
                     + Add a New Credential
@@ -166,14 +166,19 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
+                        <tr th:each="credential : ${credentials}">
                             <td>
-                                <button class="btn btn-success" type="button">Edit</button>
-                                <a class="btn btn-danger">Delete</a>
+                                <button class="btn btn-success"
+                                        th:onclick="showCredentialModal([[${credential.credentialid}]], [[${credential.url}]], [[${credential.username}]], [[${credential.password}]])"
+                                        type="button">Edit
+                                </button>
+                                <a class="btn btn-danger"
+                                   th:href="@{/credentials/delete(id=${credential.credentialid})}">Delete</a>
                             </td>
-                            <th scope="row">Example Credential URL</th>
-                            <td>Example Credential Username</td>
-                            <td>Example Credential Password</td>
+
+                            <th scope="row" th:text="${credential.url}">Example Credential URL</th>
+                            <td th:text="${credential.username}">Example Credential Username</td>
+                            <td>*********</td>
                         </tr>
                         </tbody>
                     </table>
@@ -190,8 +195,8 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <form action="#" method="POST">
-                                    <input id="credential-id" name="credentialId" type="hidden">
+                                <form action="#" method="POST" th:action="@{/credentials}">
+                                    <input id="credential-id" name="credentialid" type="hidden">
                                     <div class="form-group">
                                         <label class="col-form-label" for="note-title">URL</label>
                                         <input class="form-control" id="credential-url" maxlength="100" name="url"
@@ -240,7 +245,7 @@
 
             // For opening the credentials modal
             function showCredentialModal(credentialId, url, username, password) {
-                $('#credential-id').val(credentialId ? credentialId : '');
+                $('#credential-id').val(credentialId ? credentialId : 0);
                 $('#credential-url').val(url ? url : '');
                 $('#credential-username').val(username ? username : '');
                 $('#credential-password').val(password ? password : '');
