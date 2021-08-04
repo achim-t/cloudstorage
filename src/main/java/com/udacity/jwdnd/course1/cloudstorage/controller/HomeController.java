@@ -1,6 +1,6 @@
 package com.udacity.jwdnd.course1.cloudstorage.controller;
 
-import com.udacity.jwdnd.course1.cloudstorage.model.NoteForm;
+import com.udacity.jwdnd.course1.cloudstorage.model.Note;
 import com.udacity.jwdnd.course1.cloudstorage.model.User;
 import com.udacity.jwdnd.course1.cloudstorage.services.NoteService;
 import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 @RequestMapping("/home")
@@ -34,12 +35,10 @@ public class HomeController {
     }
 
     @PostMapping
-    public String postHome(Model model, Authentication authentication, NoteForm noteForm) {
-        noteForm.setUsername(authentication.getName());
-        this.noteService.addNote(noteForm);
-        noteForm.setText("");
-        noteForm.setTitle("");
-        model.addAttribute("notes", this.noteService.getNotes(userService.getUser(authentication.getName())));
+    public String postHome(Model model, Authentication authentication, Note note) {
+        noteService.addNote(note, userService.getUser(authentication.getName()).getUserId());
+        List<Note> notes = this.noteService.getNotes(userService.getUser(authentication.getName()));
+        model.addAttribute("notes", notes);
         return "home";
     }
 }

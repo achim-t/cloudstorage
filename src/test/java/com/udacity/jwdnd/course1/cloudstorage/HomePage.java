@@ -1,5 +1,6 @@
 package com.udacity.jwdnd.course1.cloudstorage;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -28,8 +29,38 @@ public class HomePage {
         PageFactory.initElements(driver, this);
     }
 
+    public List<WebElement> getNoteTitles() {
+        return noteTitles;
+    }
+
     public int getNoteCount() {
         return noteTitles.size();
+    }
+
+    public void editNote(int noteId, String newTitle, String newText) {
+        this.notesTab.click();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        String noteIdText = "note-" + noteId;
+        WebElement note = driver.findElement(By.id(noteIdText));
+        WebElement editButton = note.findElement(By.tagName("button"));
+        editButton.click();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        this.noteTitle.sendKeys(newTitle);
+        this.noteDescription.sendKeys(newText);
+        this.noteSubmit.click();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public void createNote(String title, String text) {
@@ -55,4 +86,6 @@ public class HomePage {
         }
 
     }
+
+
 }

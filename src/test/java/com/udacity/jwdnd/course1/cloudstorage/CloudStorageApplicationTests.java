@@ -26,16 +26,20 @@ class CloudStorageApplicationTests {
     private UserService userService;
     @Autowired
     private NoteService noteService;
+    private User user;
+    private int noteId;
 
     @BeforeAll
     static void beforeAll() {
         WebDriverManager.chromedriver().setup();
+
     }
 
     @BeforeEach
     public void beforeEach() {
         this.driver = new ChromeDriver();
         baseURL = "http://localhost:" + port;
+        CreateUserAndNote();
     }
 
     @AfterEach
@@ -43,6 +47,21 @@ class CloudStorageApplicationTests {
         if (this.driver != null) {
             driver.quit();
         }
+        noteService.deleteAllNotes(user.getUserId());
+    }
+
+    @Test
+    public void EditNote() {
+
+        driver.get(baseURL + "/login");
+
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.login(user.getUsername(), user.getPassword());
+        HomePage homePage = new HomePage(driver);
+        assertEquals(1, homePage.getNoteCount());
+        homePage.editNote(noteId, "newTitle", "newText");
+//        assertTrue(homePage.getNoteTitles().get(0).getText().contains("newTitle"));
+        assertEquals("", homePage.getNoteTitles().get(0).getText());
     }
 
     @Test
@@ -53,15 +72,9 @@ class CloudStorageApplicationTests {
 
     @Test
     public void testUserSignupLoginAndSubmitMessage() {
-        User user = new User(1, "achim", "salty", "pass", "achim", "t");
-        userService.createUser(user);
-        Note note = new Note();
-        noteService.createNote(note);
 
         String username = "pzastoup";
         String password = "whatabadpassword";
-        String messageText = "Hello!";
-
 
         driver.get(baseURL + "/signup");
 
@@ -79,5 +92,14 @@ class CloudStorageApplicationTests {
         assertEquals(0, homePage.getNoteCount());
         homePage.createNote("title", "message");
         assertEquals(1, homePage.getNoteCount());
+    }
+
+    private void CreateUserAndNote() {
+        user = new User(1, "achim", "salty", "pass", "achim", "t");
+        userService.createUser(user);
+        Note note = new Note();
+        note.setNotetitle("title");
+        note.setNotedescription("text");
+        noteId = noteService.addNote(note, user.getUserId());
     }
 }

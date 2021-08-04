@@ -1,9 +1,9 @@
 package com.udacity.jwdnd.course1.cloudstorage.mapper;
 
 import com.udacity.jwdnd.course1.cloudstorage.model.Note;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -17,9 +17,11 @@ public interface NoteMapper {
     @Select("SELECT * FROM NOTES")
     List<Note> getAllNotes();
 
-    @Insert("INSERT INTO NOTES (userid, notetitle, notedescription) VALUES(#{userId}, #{noteTitle}, #{noteText})")
-    @Options(useGeneratedKeys = true, keyProperty = "noteId")
-    int insert(Note note);
+    @Insert("INSERT INTO NOTES (notetitle, notedescription, userid) VALUES (#{note.notetitle}, #{note.notedescription}, #{userid})")
+    int insert(Note note, Integer userid);
+
+    @Delete("Delete FROM NOTES WHERE userid=#{userid}")
+    void delete(Integer userId);
 
 
 //    @Insert("INSERT INTO USERS (username, salt, password, firstname, lastname) VALUES(#{username}, #{salt}, #{password}, #{firstName}, #{lastName})")
