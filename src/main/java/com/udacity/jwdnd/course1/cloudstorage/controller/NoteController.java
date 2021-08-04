@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/notes")
@@ -23,19 +24,30 @@ public class NoteController {
     }
 
     @PostMapping
-    public String postNote(Authentication authentication, Note note) {
+    public String postNote(Authentication authentication, Note note, RedirectAttributes redirectAttributes) {
         User user = userService.getUser(authentication.getName());
         if (note.getNoteid() > 0) {
-            noteService.updateNote(note, user.getUserId());
+            if (noteService.updateNote(note, user.getUserId())) {
+                redirectAttributes.addFlashAttribute("success", "Note updated");
+            } else {
+                redirectAttributes.addFlashAttribute("error", "Something went wrong");
+            }
         } else {
             noteService.addNote(note, user.getUserId());
+            redirectAttributes.addFlashAttribute("success", "Note created");
         }
-        return "redirect:/home#nav-notes";
+        redirectAttributes.addFlashAttribute("tab", "notes");
+        return "redirect:/home";
     }
 
     @GetMapping("/delete")
-    public String deleteNote(@RequestParam("id") Integer noteid, Authentication authentication) throws Exception {
-        noteService.delete(noteid, userService.getUser(authentication.getName()).getUserId());
-        return "redirect:/home#nav-notes";
+    public String deleteNote(@RequestParam("id") Integer noteid, Authentication authentication, RedirectAttributes redirectAttributes) {
+        if (noteService.delete(noteid, userService.getUser(authentication.getName()).getUserId())) {
+            redirectAttributes.addFlashAttribute("success", "Note deleted");
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Something went wrong");
+        }
+        redirectAttributes.addFlashAttribute("tab", "notes");
+        return "redirect:/home";
     }
 }

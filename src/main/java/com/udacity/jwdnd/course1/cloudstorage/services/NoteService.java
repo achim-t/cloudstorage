@@ -31,13 +31,21 @@ public class NoteService {
         }
     }
 
-    public void updateNote(Note note, Integer userId) {
-        if (noteMapper.findOne(note.getNoteid()).getUserid() == userId)
-            noteMapper.update(note);
+    public boolean updateNote(Note note, Integer userId) {
+        Note noteDB = noteMapper.findOne(note.getNoteid());
+        if (noteDB == null) return false;
+        if (noteDB.getUserid() != userId) return false;
+
+        noteMapper.update(note);
+        return true;
     }
 
-    public void delete(Integer noteid, Integer userId) {
-        if (noteMapper.findOne(noteid).getUserid() == userId)
-            noteMapper.delete(noteid);
+    public boolean delete(Integer noteid, Integer userId) {
+        Note noteDB = noteMapper.findOne(noteid);
+        if (noteDB == null) return false;
+        if (noteDB.getUserid() != userId) return false;
+
+        noteMapper.delete(noteid);
+        return true;
     }
 }

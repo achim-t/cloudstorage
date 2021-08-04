@@ -16,18 +16,34 @@
         </form>
     </div>
     <div id="contentDiv" style="clear: right;">
+        <div class="alert alert-success alert-dismissible fade show" role="alert" th:if="${success}">
+            <div th:text="${success}">Success</div>
+            <button aria-label="Close" class="close" data-dismiss="alert" type="button">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${error}">
+            <div th:text="${success}">Error</div>
+            <button aria-label="Close" class="close" data-dismiss="alert" type="button">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
         <nav style="clear: right;">
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                <a aria-controls="nav-files" aria-selected="true" class="nav-item nav-link active" data-toggle="tab"
+                <a aria-controls="nav-files" class="nav-item nav-link" data-toggle="tab"
+                   th:classappend="${tab}=='files' ? 'active' : ''"
                    href="#nav-files" id="nav-files-tab" role="tab">Files</a>
                 <a aria-controls="nav-notes" aria-selected="false" class="nav-item nav-link" data-toggle="tab"
+                   th:classappend="${tab}=='notes' ? 'active' : ''"
                    href="#nav-notes" id="nav-notes-tab" role="tab">Notes</a>
                 <a aria-controls="nav-credentials" aria-selected="false" class="nav-item nav-link" data-toggle="tab"
+                   th:classappend="${tab}=='credentials' ? 'active' : ''"
                    href="#nav-credentials" id="nav-credentials-tab" role="tab">Credentials</a>
             </div>
         </nav>
         <div class="tab-content" id="nav-tabContent">
-            <div aria-labelledby="nav-files-tab" class="tab-pane fade show active" id="nav-files" role="tabpanel">
+            <div aria-labelledby="nav-files-tab" class="tab-pane fade" id="nav-files" role="tabpanel"
+                 th:classappend="${tab}=='files' ? ' show active' : ''">
                 <form action="#" enctype="multipart/form-data" method="POST">
                     <div class="container">
                         <div class="row" style="margin: 1em;">
@@ -63,7 +79,8 @@
                     </table>
                 </div>
             </div>
-            <div aria-labelledby="nav-notes-tab" class="tab-pane fade" id="nav-notes" role="tabpanel">
+            <div aria-labelledby="nav-notes-tab" class="tab-pane fade" id="nav-notes" role="tabpanel"
+                 th:classappend="${tab}=='notes' ? ' show active' : ''">
                 <button class="btn btn-info float-right" onclick="showNoteModal()" style="margin: 0.25em;"
                         id="note-add" type="button">
                     + Add a New Note
@@ -131,7 +148,8 @@
                     </div>
                 </div>
             </div>
-            <div aria-labelledby="nav-credentials-tab" class="tab-pane fade" id="nav-credentials" role="tabpanel">
+            <div aria-labelledby="nav-credentials-tab" class="tab-pane fade" id="nav-credentials" role="tabpanel"
+                 th:classappend="${tab}=='credentials' ? ' show active' : ''">
                 <button class="btn btn-info float-right" onclick="showCredentialModal()" style="margin: 0.25em;"
                         type="button">
                     + Add a New Credential
@@ -228,20 +246,6 @@
                 $('#credential-password').val(password ? password : '');
                 $('#credentialModal').modal('show');
             }
-$(document).ready(function() {
-    function onHashChange() {
-        var hash = window.location.hash;
-
-        if (hash) {
-            // using ES6 template string syntax
-            $(`[data-toggle="tab"][href="${hash}"]`).trigger('click');
-        }
-    }
-
-    window.addEventListener('hashchange', onHashChange, false);
-    onHashChange();
-});
-
 </script>
 </body>
 </html>

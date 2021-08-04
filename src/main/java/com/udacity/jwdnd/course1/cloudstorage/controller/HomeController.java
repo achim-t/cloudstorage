@@ -7,8 +7,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/home")
@@ -23,7 +26,11 @@ public class HomeController {
     }
 
     @GetMapping
-    public String getHome(Model model, Principal principal) {
+    public String getHome(Model model, Principal principal, HttpServletRequest request) {
+        Map<String, ?> inputFlashMap = RequestContextUtils.getInputFlashMap(request);
+        if (inputFlashMap == null || !inputFlashMap.containsKey("tab")) {
+            model.addAttribute("tab", "files");
+        }
         User user = userService.getUser(principal.getName());
 
         model.addAttribute("notes", this.noteService.getNotes(user));
