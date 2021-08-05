@@ -23,7 +23,7 @@
             </button>
         </div>
         <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${error}">
-            <div th:text="${success}">Error</div>
+            <div th:text="${error}">Error</div>
             <button aria-label="Close" class="close" data-dismiss="alert" type="button">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -44,7 +44,7 @@
         <div class="tab-content" id="nav-tabContent">
             <div aria-labelledby="nav-files-tab" class="tab-pane fade" id="nav-files" role="tabpanel"
                  th:classappend="${tab}=='files' ? ' show active' : ''">
-                <form action="#" enctype="multipart/form-data" method="POST">
+                <form action="#" enctype="multipart/form-data" method="POST" th:action="@{/files}">
                     <div class="container">
                         <div class="row" style="margin: 1em;">
                             <div class="col-sm-2">
@@ -68,12 +68,13 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
+                        <tr th:each="file : ${files}">
                             <td>
-                                <a class="btn btn-success" target="_blank">View</a>
-                                <a class="btn btn-danger">Delete</a>
+                                <a class="btn btn-success" target="_blank"
+                                   th:href="@{/files/download(id=${file.fileId})}">View</a>
+                                <a class="btn btn-danger" th:href="@{/files/delete(id=${file.fileId})}">Delete</a>
                             </td>
-                            <th scope="row">ExampleFile.txt</th>
+                            <th scope="row" th:text="${file.filename}">ExampleFile.txt</th>
                         </tr>
                         </tbody>
                     </table>
