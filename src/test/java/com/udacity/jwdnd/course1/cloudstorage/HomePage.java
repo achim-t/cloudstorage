@@ -1,6 +1,5 @@
 package com.udacity.jwdnd.course1.cloudstorage;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -14,15 +13,21 @@ public class HomePage {
 
     private final WebDriver driver;
     @FindBy(id = "note-title")
-    private WebElement noteTitle;
+    public WebElement noteTitle;
     @FindBy(id = "note-description")
-    private WebElement noteDescription;
+    public WebElement noteDescription;
     @FindBy(id = "note-submit")
-    private WebElement noteSubmit;
+    public WebElement noteSubmit;
     @FindBy(id = "note-add")
-    private WebElement noteAdd;
+    public WebElement noteAdd;
     @FindBy(id = "nav-notes-tab")
     private WebElement notesTab;
+    @FindBy(id = "userTable")
+    public WebElement notesTable;
+    @FindBy(id = "nav-credentials-tab")
+    private WebElement credentialsTab;
+    @FindBy(id = "nav-files-tab")
+    private WebElement filesTab;
 
     public HomePage(WebDriver driver) {
         this.driver = driver;
@@ -37,54 +42,14 @@ public class HomePage {
         return noteTitles.size();
     }
 
-    public void editNote(int noteId, String newTitle, String newText) {
-        this.notesTab.click();
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+    public void activateTab(String tab) {
+        if (tab == "notes") {
+            notesTab.click();
+        } else if (tab == "files") {
+            filesTab.click();
+        } else if (tab == "credentials") {
+            credentialsTab.click();
         }
-        String noteIdText = "note-" + noteId;
-        WebElement note = driver.findElement(By.id(noteIdText));
-        WebElement editButton = note.findElement(By.tagName("button"));
-        editButton.click();
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        this.noteTitle.sendKeys(newTitle);
-        this.noteDescription.sendKeys(newText);
-        this.noteSubmit.click();
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void createNote(String title, String text) {
-        this.notesTab.click();
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        this.noteAdd.click();
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        this.noteTitle.sendKeys(title);
-        this.noteDescription.sendKeys(text);
-        this.noteSubmit.click();
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
     }
 
 

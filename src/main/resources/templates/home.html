@@ -12,7 +12,7 @@
 <div class="container">
     <div id="logoutDiv">
         <form action="#" method="POST" th:action="@{/logout}">
-            <button class="btn btn-secondary float-right" type="submit">Logout</button>
+            <button class="btn btn-secondary float-right" id="logout" type="submit">Logout</button>
         </form>
     </div>
     <div id="contentDiv" style="clear: right;">
@@ -152,7 +152,7 @@
             <div aria-labelledby="nav-credentials-tab" class="tab-pane fade" id="nav-credentials" role="tabpanel"
                  th:classappend="${tab}=='credentials' ? 'show active' : ''">
                 <button class="btn btn-info float-right" onclick="showCredentialModal()" style="margin: 0.25em;"
-                        type="button">
+                        id="credential-add" type="button">
                     + Add a New Credential
                 </button>
 
@@ -169,17 +169,20 @@
                         <tbody>
                         <tr th:each="credential : ${credentials}">
                             <td>
-                                <button class="btn btn-success"
+                                <button class="btn btn-success credential-edit"
                                         th:onclick="showCredentialModal([[${credential.credentialid}]], [[${credential.url}]], [[${credential.username}]], [[${credential.password}]])"
                                         type="button">Edit
                                 </button>
-                                <a class="btn btn-danger"
+                                <a class="btn btn-danger credential-delete"
                                    th:href="@{/credentials/delete(id=${credential.credentialid})}">Delete</a>
                             </td>
 
-                            <th scope="row" th:text="${credential.url}">Example Credential URL</th>
-                            <td th:text="${credential.username}">Example Credential Username</td>
-                            <td>*********</td>
+                            <th class="credential-url" scope="row" th:text="${credential.url}">Example Credential URL
+                            </th>
+                            <td class="credential-username" th:text="${credential.username}">Example Credential
+                                Username
+                            </td>
+                            <td class="credential-password">*********</td>
                         </tr>
                         </tbody>
                     </table>
@@ -218,7 +221,8 @@
                             </div>
                             <div class="modal-footer">
                                 <button class="btn btn-secondary" data-dismiss="modal" type="button">Close</button>
-                                <button class="btn btn-primary" onclick="$('#credentialSubmit').click();" type="button">
+                                <button class="btn btn-primary" id="credential-submit"
+                                        onclick="$('#credentialSubmit').click();" type="button">
                                     Save changes
                                 </button>
                             </div>
