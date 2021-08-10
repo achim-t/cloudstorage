@@ -170,7 +170,7 @@
                         <tr th:each="credential : ${credentials}">
                             <td>
                                 <button class="btn btn-success credential-edit"
-                                        th:onclick="showCredentialModal([[${credential.credentialid}]], [[${credential.url}]], [[${credential.username}]], [[${credential.password}]])"
+                                        th:onclick="showCredentialModal([[${credential.credentialid}]], [[${credential.url}]], [[${credential.username}]], [[${credential.decryptedpassword}]])"
                                         type="button">Edit
                                 </button>
                                 <a class="btn btn-danger credential-delete"
@@ -182,7 +182,7 @@
                             <td class="credential-username" th:text="${credential.username}">Example Credential
                                 Username
                             </td>
-                            <td class="credential-password">*********</td>
+                            <td class="credential-password" th:text="${credential.password}">*********</td>
                         </tr>
                         </tbody>
                     </table>

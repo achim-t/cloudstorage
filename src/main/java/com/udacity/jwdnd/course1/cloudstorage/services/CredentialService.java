@@ -39,7 +39,7 @@ public class CredentialService {
     }
 
     private Credential decrypt(Credential credential) {
-        credential.setPassword(encryptionService.decryptValue(credential.getPassword(), credential.getKey()));
+        credential.setDecryptedpassword(encryptionService.decryptValue(credential.getPassword(), credential.getKey()));
         return credential;
     }
 

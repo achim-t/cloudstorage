@@ -5,6 +5,16 @@ public class Credential {
     private String username;
     private String key;
     private String password;
+    private String decryptedpassword;
+
+    public String getDecryptedpassword() {
+        return decryptedpassword;
+    }
+
+    public void setDecryptedpassword(String decryptedpassword) {
+        this.decryptedpassword = decryptedpassword;
+    }
+
     private Integer userid;
     private Integer credentialid;
 
