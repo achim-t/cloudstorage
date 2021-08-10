@@ -43,8 +43,9 @@ public class FileController {
             if (filesizeInMB > 2) {
                 redirectAttributes.addFlashAttribute("error", "file size cannot exceed 2MB");
             } else {
-                fileService.addFile(fileUpload, user.getUserId());
-                redirectAttributes.addFlashAttribute("success", "File created");
+                if (fileService.addFile(fileUpload, user.getUserId()) == -1) {
+                    redirectAttributes.addFlashAttribute("error", "file with this name already exists");
+                } else redirectAttributes.addFlashAttribute("success", "File created");
             }
         } catch (IOException | NullPointerException e) {
             redirectAttributes.addFlashAttribute("error", "File upload failed");

@@ -26,6 +26,7 @@ public class FileService {
     public int addFile(MultipartFile multipartFile, Integer userid) throws IOException {
         File file = new File();
         try {
+            if (fileNameExistsForUser(multipartFile.getOriginalFilename(), userid)) return -1;
             file.setContenttype(multipartFile.getContentType());
             file.setFiledata(multipartFile.getBytes());
             file.setFilename(multipartFile.getOriginalFilename());
@@ -34,6 +35,13 @@ public class FileService {
             throw e;
         }
         return fileMapper.insert(file, userid);
+    }
+
+    private boolean fileNameExistsForUser(String originalFilename, Integer userId) {
+        for (File file : fileMapper.getFilesByUser(userId)) {
+            if (file.getFilename().equalsIgnoreCase(originalFilename)) return true;
+        }
+        return false;
     }
 
     public void deleteAllFiles(Integer userId) {
