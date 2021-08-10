@@ -39,8 +39,13 @@ public class FileController {
 
         try {
             if (fileUpload.getSize() == 0) throw new NullPointerException();
-            fileService.addFile(fileUpload, user.getUserId());
-            redirectAttributes.addFlashAttribute("success", "File created");
+            double filesizeInMB = fileUpload.getSize() * 0.00000095367432;
+            if (filesizeInMB > 2) {
+                redirectAttributes.addFlashAttribute("error", "file size cannot exceed 2MB");
+            } else {
+                fileService.addFile(fileUpload, user.getUserId());
+                redirectAttributes.addFlashAttribute("success", "File created");
+            }
         } catch (IOException | NullPointerException e) {
             redirectAttributes.addFlashAttribute("error", "File upload failed");
         }
